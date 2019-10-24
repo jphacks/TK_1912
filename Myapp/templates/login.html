@@ -54,6 +54,7 @@
 </div>
 <p>&nbsp;</p>
 <div class="container" id="app">
+    <p class="text-danger">{{message}}</p>
     <form action="/login" method="POST">
         <div class="form-group">
             <div class="input-group">
@@ -104,7 +105,7 @@
         <div class="modal-content">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">
+                    <h4 v-bind:class="{'card-title':true, 'text-dark':primary, 'text-danger':danger}">
                         {{login_msg}}
                     </h4>
                 </div>
@@ -165,6 +166,7 @@ Vue.component('message_board', {
             form_id:'',
             form_pass:'',
             login_msg:'Login form:',
+            result_msg:'',
             primary:true,
             success:false,
             danger:false,
@@ -196,6 +198,7 @@ Vue.component('message_board', {
             this.primary = true;
             this.success = false;
             this.danger = false;
+            this.result_msg = '登録はこちら';
         },
         // access server and logined.
         login: function(e) {
@@ -221,16 +224,23 @@ Vue.component('message_board', {
                         $('#login').modal('hide');
                         self.primary = false;
                         self.success = true;
+                        self.danger = false;
+                        self.result_msg = '';
                     } else {
                         self.pass = '';
                         self.primary = false;
                         self.danger = true;
+                        self.success = false;
+                        self.result_msg = '※ そのアカウントは使用できません ※';
+                        self.login_msg = self.result_msg;
                     }
                 },
                 error: function(request, status, err) {
-                    self.login_msg = '※問題が発生しました。';
                     self.primary = false;
                     self.danger = true;
+                    self.success = false;
+                    self.result_msg = '※ 問題が発生しました ※';
+                    self.login_msg = self.result_msg;
                 }
             });
         },
