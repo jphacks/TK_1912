@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, jsonify
 from lib.user_management import Management
-
+from lib.quest_management import questMap
 app = Flask(__name__)
 app.secret_key = b'random string...'
 
@@ -11,6 +11,23 @@ def login():
             title='Adachi Quest',
             message='')
 
+@app.route('/index', methods=['POST'])
+def index_post():
+    id = request.form.get('id')
+    pswd = request.form.get('pass')
+    # User & Password が一致するときのみTrue
+    myPlace = {'name':'研究室','lat':35.747701, 'lng':139.806098}
+    qm = questMap(lat=myPlace['lat'], lng=myPlace['lng'])
+    pins, question = qm.main()
+    return render_template('index.html',
+                title='Adachi Quest',
+                message='Hello',
+                user=id,
+                password=pswd,
+                pins = pins,
+                question = question,
+                myPlace =myPlace)
+
 
 @app.route('/login', methods=['POST'])
 def login_post():
@@ -19,12 +36,18 @@ def login_post():
     manager = Management(user_id=id, password=pswd)
     # User & Password が一致するときのみTrue
     flg = manager.checkLogin()
+    myPlace = {'name':'研究室','lat':35.747701, 'lng':139.806098}
+    qm = questMap(lat=myPlace['lat'], lng=myPlace['lng'])
+    pins, question = qm.main()
     if flg:
         return render_template('index.html',
-                title='Messages',
+                title='Adachi Quest',
                 message='Hello',
                 user=id,
-                password=pswd)
+                password=pswd,
+                pins = pins,
+                question = question,
+                myPlace =myPlace)
     else:
         return render_template('login.html',
                 title='Adachi Quest',

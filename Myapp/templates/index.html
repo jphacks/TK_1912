@@ -5,11 +5,175 @@
 {% endblock %}
 
 {% block headline %}
-{{title}}
+<script src="/static/clock.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
+<div class="container border-bottom border-info" style=" border: 5px">
+    <div class="row no-gutters">
+        <div class="col">
+            <div class="float-center">
+                <h5  style="font-family: Permanent Marker; font-size: 60%">
+                    {{title}}
+                </h5>
+            </div>
+        </div>
+        <div class="col-2">
+                <div class="float-center">
+                    <small style="font-size: xx-small;" id="RealtimeClockArea">
+                    </small>
+                </div>
+            </div>
+        <div class="col-3">
+            <div class="float-right">
+                <small style="font-size: xx-small;">
+                    ログイン：{{user}}
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block content %}
-{{message}}
+<!--切り替えタブ-->
+<ul class="nav nav-fill w-100" role='tablist'>
+<!--1つ目のタブ-->
+<li class="nav-item text-center">
+    <a class="nav-link" href="#quest" data-toggle="tab" role="tab">
+        クエスト<br>
+        <i class="fas fa-gem"></i>
+    </a>
+</li>
+<!--2つ目のタブ-->
+<li class="nav-item text-center">
+    <a class="nav-link" href="#stamp" data-toggle="tab" role="tab">
+        スタンプ<br>
+        <i class="fas fa-stamp"></i>
+    </a>
+</li>
+<!--3つ目のタブ-->
+<li class="nav-item text-center">
+    <a class="nav-link active" href="#googlemap" data-toggle="tab" role="tab">
+        マップ<br>
+        <i class="fas fa-map-marked-alt"></i>
+    </a>
+</li>
+<!--4つ目のタブ-->
+<li class="nav-item text-center">
+    <a class="nav-link" href="#info" data-toggle="tab" role="tab">
+        情報<br>
+        <i class="fas fa-info-circle"></i>
+    </a>
+</li>
+</ul>
+<!--コンテンツ部分-->
+<div class="tab-content">
+    <!--1つ目のコンテンツ-->
+    <div class="tab-pane fade" id="quest">
+    </div>
+    <div class="tab-pane fade" id="stamp"role="tabpanel">
+    </div>
+    <div class="tab-pane fade show active" id="googlemap" role="tabpanel">
+        <div class="card w-100">
+            <div class="card-header">
+                Goole Map
+            </div>
+            <div class="card-body">
+            {% raw %}
+            <div class="center-block" id="map" style="width:300px; height:300px">
+                <div class="float-right">
+                    <a href="#" class="btn btn-info btn-icon" v-on:click="action">
+                    <i class="fas fa-check"></i>
+                    <span class="btn-text">Open Map</span>
+                    </a>
+                </div>
+            </div>
+            {% endraw %}
+            </div>
+        </div>
+        <form action="/index" method="POST">
+            <div class="form-group clearfix">
+                <div class="float-right">
+                    <input type="hidden"  id="id" name="id" value="{{user}}">
+                    <input type="hidden" id="pass" name="pass" value="{{password}}">
+                    <input class="btn btn-outline-primary rounded-pill h4 text-center btn-sm" type="submit" value="更新" style="height: 35px; width:75px;">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="tab-pane fade" id="info" role="tabpanel">
+    </div>
+</div>
+
+
+
+<script>
+// Flaskからpins, question, myplaceを取得
+var pins = eval({{pins|tojson}})
+var Question = eval({{question|tojson}})
+var myPlace = eval({{myPlace|tojson}})
+new Vue({
+    el:"#map",
+    data:{},
+    methods: {
+        action:function(e){
+            var map;
+            var marker = [];
+            var infoWindow = [];
+            // 現在地の作成
+            var mapLatLng = new google.maps.LatLng({lat: myPlace['lat'], lng: myPlace['lng']});
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: mapLatLng,
+                zoom: 15
+            });
+            people = new google.maps.Marker({
+                position: mapLatLng,
+                map: map,
+                icon:{
+                    url: '/static/image/icon/Myplace.png',
+                    scaledSize: new google.maps.Size(40, 40)
+                },
+                optimized: false ,
+            });
+            // マーカー毎の処理
+            for (var i = 0; i < pins['name'].length; i++) {
+                markerLatLng = new google.maps.LatLng({lat: pins['lat'][i], lng: pins['lng'][i]}); // 緯度経度のデータ作成
+                marker[i] = new google.maps.Marker({
+                    position: markerLatLng,
+                    map: map,
+                    icon:{
+                        url: '/static/image/icon/'+pins['icon'][i]+'.png',
+                        scaledSize: new google.maps.Size(40, 40)
+                    }
+                });
+                var pinsName = '<p class="text-primary" style="font-size:18px;">'+pins['name'][i]+'</p>';
+                if (pins['icon'][i] === '00'){
+                    var question = '<div class="bg-info text-white" style="font-size:15px;">Q : '+Question['Question'][i]+'</div>';
+                    var Q1 = '<li style="font-size:15px;">'+Question['Q1'][i]+'</li>';
+                    var Q2 = '<li style="font-size:15px;">'+Question['Q2'][i]+'</li>';
+                    var Q3 = '<li style="font-size:15px;">'+Question['Q3'][i]+'</li>';
+                    var text = pinsName+question+'<ul type="circle" style="border: 2px; skyblue dashed; background: #f3fbff;">'+Q1+Q2+Q3+'</ul>'
+                } else{
+                    var text = pinsName
+                }
+                infoWindow[i] = new google.maps.InfoWindow({ // 吹き出しの追加
+                    content: '<div class="map" style="width : 300px;height : 150px;>'+text+'</div>' // 吹き出しに表示する内容
+                    });
+                    markerEvent(i)
+                }
+            
+        function markerEvent(i) {
+            marker[i].addListener('click', function() { // マーカーをクリックしたとき
+                infoWindow[i].open(map, marker[i]); // 吹き出しの表示
+                });
+            }
+        }
+    },
+})
+</script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAk-wCC7RGCTKwZQGhXV-q-knk0IUjR7pc&callback=initMap">
+</script>
 {% endblock %}
 
 {% block footer %}
