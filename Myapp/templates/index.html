@@ -99,17 +99,17 @@
                                 <div id="accordion-{{point}}" class="collapse hide" aria-labelledby="accordion-heading-one" data-parent="#accordion">
                                     <div class="px-3 pb-3">
                                         {% set answer = question['Answer'][loop.index0] %}
-                                        {{question['Answer'][loop.index0]}}:{{question[answer][loop.index0]}}
+                                        <p class="text-pinterest">{{question['Answer'][loop.index0]}}:{{question[answer][loop.index0]}}</p>
                                         <div class="card" style="max-width: 500px;">
                                             <div class="row no-gutters">
                                                 <div class="col-xs-4">
-                                                    <img src="/static/image/point/{{point}}.jpg" class="card-img rounded-0" style="height: 100px; width:100%; object-fit:cover" alt="image">
+                                                    <img src="/static/image/point/{{point}}.jpg" class="card-img rounded-0" style="height: 150px; width:100%; object-fit:cover" alt="image">
                                                 </div>
                                                 <div class="col-xs-8">
                                                     <div class="card-body">
                                                         <h5 class="card-title">{{point}}</h5>
                                                         <p class="card-text">
-                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit pellentesque tristique
+                                                            {{question['explanation'][loop.index0]}}
                                                         </p>
                                                         <small class="text-dark card-title" style="font-size: 5px; line-height: 1pt;">{{question['copyRight'][loop.index0]}}</small>
                                                     </div>
