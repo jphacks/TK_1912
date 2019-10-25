@@ -69,49 +69,54 @@
 <div class="tab-content">
     <!--1つ目のコンテンツ-->
     <div class="tab-pane fade" id="quest">
-        {% for point in question['name']%}
-            <button type="button" class="btn btn-outline-info offset-md-4" data-toggle="modal" data-target="#{{point}}">
-                クエスト:{{loop.index0}}
-            </button>
-            
-            <div class="modal fade" id="{{point}}" tabindex="-1" role="dialog" aria-labelledby="{{point}}Label" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="{{point}}Label">{{question['Question'][loop.index0]}}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&#10005;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <ul style="list-style-type:decimal">
-                                <li>{{question['Q1'][loop.index0]}}</li>
-                                <li>{{question['Q2'][loop.index0]}}</li>
-                                <li>{{question['Q3'][loop.index0]}}</li>
-                            </ul>
-                        </div>
-                        <div class="accordion" id="accordion">
-                            <div class="accordion-item">
-                                <h5 id="accordion-heading-one" class="d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#accordion-{{point}}" aria-expanded="true" aria-controls="accordion-collapse-one">
-                                    Answer.
-                                    <span class="accordion-icon">&#10005;</span>
-                                </h5>
-                                <div id="accordion-{{point}}" class="collapse hide" aria-labelledby="accordion-heading-one" data-parent="#accordion">
-                                    <div class="px-3 pb-3">
-                                        {% set answer = question['Answer'][loop.index0] %}
-                                        <p class="text-pinterest">{{question['Answer'][loop.index0]}}:{{question[answer][loop.index0]}}</p>
-                                        <div class="card" style="max-width: 500px;">
-                                            <div class="row no-gutters">
-                                                <div class="col-xs-4">
-                                                    <img src="/static/image/point/{{point}}.jpg" class="card-img rounded-0" style="height: 150px; width:100%; object-fit:cover" alt="image">
-                                                </div>
-                                                <div class="col-xs-8">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">{{point}}</h5>
-                                                        <p class="card-text">
-                                                            {{question['explanation'][loop.index0]}}
-                                                        </p>
-                                                        <small class="text-dark card-title" style="font-size: 5px; line-height: 1pt;">{{question['copyRight'][loop.index0]}}</small>
+        <div class="card" style="width: 20rem;">
+            <div class="card-header">
+                クエスト一覧
+            </div>
+            <div class="card-body">
+            {% for point in question['name']%}
+                <button type="button" class="btn-sm btn btn-outline-info offset-md-4" data-toggle="modal" data-target="#{{point}}">
+                    クエスト:{{loop.index0}}
+                </button>
+                <div class="modal fade" id="{{point}}" tabindex="-1" role="dialog" aria-labelledby="{{point}}Label" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="{{point}}Label">{{question['Question'][loop.index0]}}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&#10005;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <ul style="list-style-type:decimal">
+                                    <li>{{question['Q1'][loop.index0]}}</li>
+                                    <li>{{question['Q2'][loop.index0]}}</li>
+                                    <li>{{question['Q3'][loop.index0]}}</li>
+                                </ul>
+                            </div>
+                            <div class="accordion" id="accordion">
+                                <div class="accordion-item">
+                                    <h5 id="accordion-heading-one" class="d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#accordion-{{point}}" aria-expanded="true" aria-controls="accordion-collapse-one">
+                                        Answer.
+                                        <span class="accordion-icon">&#10005;</span>
+                                    </h5>
+                                    <div id="accordion-{{point}}" class="collapse hide" aria-labelledby="accordion-heading-one" data-parent="#accordion">
+                                        <div class="px-3 pb-3">
+                                            {% set answer = question['Answer'][loop.index0] %}
+                                            <p class="text-pinterest">{{question['Answer'][loop.index0]}}:{{question[answer][loop.index0]}}</p>
+                                            <div class="card" style="max-width: 500px;">
+                                                <div class="row no-gutters">
+                                                    <div class="col-xs-4">
+                                                        <img src="/static/image/point/{{point}}.jpg" class="card-img rounded-0" style="height: 150px; width:100%; object-fit:cover" alt="image">
+                                                    </div>
+                                                    <div class="col-xs-8">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">{{point}}</h5>
+                                                            <p class="card-text callout callout-secondary">
+                                                                {{question['explanation'][loop.index0]}}
+                                                            </p>
+                                                            <small class="text-dark card-title" style="font-size: 5px; line-height: 1pt;">{{question['copyRight'][loop.index0]}}</small>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -119,17 +124,65 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            {% endfor %}
             </div>
-        {% endfor %}
+            <div class="card-footer text-muted">
+                <div class="float-right">
+                    <small style="font-size: xx-small;">
+                        {{user}}
+                    </small>
+                </div>
+            </div>
+        </div>
     </div>
     <!--2つ目のコンテンツ-->
     <div class="tab-pane fade" id="stamp"role="tabpanel">
+        <div class="card" style="width: 20rem;">
+            <div class="card-header">
+                スタンプカード
+            </div>
+            <div class="card-body">
+                {% for stamp in question['name']%}
+                <button type="button" data-toggle="modal" data-target="#{{stamp}}Lightbox" class="bg-white rounded-lg">
+                        <img src="/static/image/point/{{stamp}}.jpg" class="img-avatar rounded-circle border" style="object-fit:cover;">
+                </button>
+                <div class="modal modal-lightbox fade" id="{{stamp}}Lightbox" tabindex="-1" role="dialog" aria-labelledby="{{stamp}}Lightbox" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&#10005;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <img src="/static/image/point/{{stamp}}.jpg" class="card-img rounded-0" style="height: 100%; width:100%; object-fit:cover" alt="image">
+                            </div>
+                            <div class="modal-footer">
+                                <div class="float-right">
+                                    <a href="/static/image/point/{{stamp}}.jpg" download="{{stamp}}.jpg" class="btn btn-outline-primary">
+                                    <i class="fas fa-angle-double-down"></i>
+                                    <span class="btn-text">Download</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="card-footer text-muted">
+                <div class="float-right">
+                    <small style="font-size: xx-small;">
+                       {{user}}
+                    </small>
+                </div>
+            </div>
+        </div>
     </div>
     <!--3つ目のコンテンツ-->
     <div class="tab-pane fade show active" id="googlemap" role="tabpanel">
