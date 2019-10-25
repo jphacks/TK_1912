@@ -28,6 +28,14 @@ def index_post():
                 question = question,
                 myPlace =myPlace)
 
+@app.route('/index', methods=['GET'])
+def index_get():
+    return redirect('/')
+
+@app.route('/login', methods=['GET'])
+def login_get():
+    return redirect('/')
+
 
 @app.route('/login', methods=['POST'])
 def login_post():
