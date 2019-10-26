@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{title}}
+{% endblock %}
+
+{% block headline %}
+<script src="/static/clock.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
+<div class="container border-bottom border-info" style=" border: 5px">
+    <div class="row no-gutters">
+        <div class="col">
+            <div class="float-center">
+                <h5  style="font-family: Permanent Marker; font-size: 60%">
+                    {{title}}
+                </h5>
+            </div>
+        </div>
+        <div class="col-2">
+                <div class="float-center">
+                    <small style="font-size: xx-small;" id="RealtimeClockArea">
+                    </small>
+                </div>
+            </div>
+        <div class="col-3">
+            <div class="float-right">
+                <small style="font-size: xx-small;">
+                    ログイン：{{user}}
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+{% if quest["Answer"] == answer%}
+<div class="card" style="width: 20rem;">
+    <div class="card-header">
+        <h1>正解!!</h1>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title text-danger">{{quest['Answer']}}：{{quest[quest['Answer']]}}</h5>
+        <div class="callout callout-secondary">
+            1927年、僕は生まれてないよ！
+        </div>
+        <div class="accordion" id="accordion">
+            <div class="accordion-item">
+                <h3 id="accordion-heading-one" class="d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#accordion-collapse-one" aria-expanded="true" aria-controls="accordion-collapse-one">
+                    {{quest['name']}}とは？
+                    <span class="accordion-icon">&#10005;</span>
+                </h3>
+                <div id="accordion-collapse-one" class="collapse" aria-labelledby="accordion-heading-one" data-parent="#accordion">
+                    <div class="px-3 pb-3">
+                        <small class="text-dark card-title">{{quest['explanation']}}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="logout"><a href="logout" class="btn btn-primary">Logout</a></div>
+{% else %}
+<div class="card" style="width: 20rem;">
+    <div class="card-header text-behance">
+        <h1>不正解!!</h1>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">ヒント</h5>
+        <div class="callout callout-secondary">
+            ヒントだよ!
+        </div>
+        <div class="accordion" id="accordion">
+                <div id="accordion-collapse-one" class="collapse show" aria-labelledby="accordion-heading-one" data-parent="#accordion">
+                    <div class="px-3 pb-3">
+                        <small class="text-dark card-title">{{quest['explanation']}}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form action="/login" method="POST">
+    <div class="form-group clearfix">
+        <div style="text-align: center;">
+            <input type="hidden"  id="id" name="id" value="{{user}}">
+            <input type="hidden" id="pass" name="pass" value="{{password}}">
+            <input class="btn btn-secondary" type="submit" value="再回答">
+        </div>
+    </div>
+</form>
+{% endif %}
+{% endblock %}
+
+{% block footer %}
+{% if quest["Answer"] != answer %}
+<div class="logout"><a href="logout" class="btn btn-primary">Logout</a></div>
+{% endif %}
+<div style="position: fixed; bottom: 0; width: 95%; height: 50px;">
+    <small>copyright 2019 Mikke !o!</small> 
+</div>
+{% endblock %}

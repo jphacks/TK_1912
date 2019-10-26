@@ -1,0 +1,142 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{title}}
+{% endblock %}
+
+{% block headline %}
+<script src="/static/clock.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
+<div class="container border-bottom border-info" style=" border: 5px">
+    <div class="row no-gutters">
+        <div class="col">
+            <div class="float-center">
+                <h5  style="font-family: Permanent Marker; font-size: 60%">
+                    {{title}}
+                </h5>
+            </div>
+        </div>
+        <div class="col-2">
+                <div class="float-center">
+                    <small style="font-size: xx-small;" id="RealtimeClockArea">
+                    </small>
+                </div>
+            </div>
+        <div class="col-3">
+            <div class="float-right">
+                <small style="font-size: xx-small;">
+                    ログイン：{{user}}
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="callout callout-primary">
+    Quetion : {{quest['Question']}}
+</div>
+<div class="accordion" id="accordion">
+    <div class="accordion-item">
+        <h3 id="accordion-heading-one" class="d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#accordion-collapse-one" aria-expanded="true" aria-controls="accordion-collapse-one">
+            Q1 : {{quest['Q1']}}
+            <span class="accordion-icon">&#10005;</span>
+        </h3>
+        <div id="accordion-collapse-one" class="collapse show" aria-labelledby="accordion-heading-one" data-parent="#accordion">
+            <div class="px-3 pb-3">
+                <img src="/static/image/point/北千住駅.jpg" class="card-img-top" alt="image">
+            </div>
+            <div class="px-3 pb-3">
+                ポーズ説明
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h3 id="accordion-heading-two" class="collapsed rounded d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#accordion-collapse-two" aria-expanded="true" aria-controls="accordion-collapse-two">
+                Q2 : {{quest['Q2']}}
+                <span class="accordion-icon">&#10005;</span>
+            </h3>
+            <div id="accordion-collapse-two" class="collapse" aria-labelledby="accordion-heading-two" data-parent="#accordion">
+                <div class="px-3 pb-3">
+                    <img src="/static/image/point/北千住駅.jpg" class="card-img-top" alt="image">
+                </div>
+                <div class="px-3 pb-3">
+                    ポーズ説明
+                </div>
+            </div>
+        </div>
+    <div class="accordion-item">
+        <h3 id="accordion-heading-three" class="collapsed rounded d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#accordion-collapse-three" aria-expanded="true" aria-controls="accordion-collapse-three">
+            Q3 : {{quest['Q3']}}
+            <span class="accordion-icon">&#10005;</span>
+        </h3>
+        <div id="accordion-collapse-three" class="collapse" aria-labelledby="accordion-heading-three" data-parent="#accordion">
+            <div class="px-3 pb-3">
+                <img src="/static/image/point/北千住駅.jpg" class="card-img-top" alt="image">
+            </div>
+            <div class="px-3 pb-3">
+                ポーズ説明
+            </div>
+        </div>
+    </div>
+</div>
+{% if flg %}
+<div style="text-align: center;">
+    <button type="button" class="btn btn-outline-success rounded-pill h4 text-center btn-sm" data-toggle="modal" data-target="#exampleModal">
+            Open Image
+    </button>
+</div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">「{{quest['Answer']}}：{{quest[quest['Answer']]}}」でよいですか？</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&#10005;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img src="/static/Image/image.jpg">
+                </div>
+                <div class="modal-footer">
+                    <form action="/login" method="POST">
+                        <div class="form-group clearfix">
+                            <div style="text-align: center;">
+                                <input type="hidden"  id="id" name="id" value="{{user}}">
+                                <input type="hidden" id="pass" name="pass" value="{{password}}">
+                                <input class="btn btn-secondary" type="submit" value="再撮影">
+                            </div>
+                        </div>
+                    </form>
+                    <form action="/takephoto" method="POST">
+                        <div class="form-group clearfix">
+                            <div style="text-align: center;">
+                                <input type="hidden"  id="id" name="id" value="{{user}}">
+                                <input type="hidden" id="pass" name="pass" value="{{password}}">
+                                <input type="hidden" id="answer" name="answer" value="{{quest['Answer']}}">
+                                <input class="btn btn-primary" type="submit" value="Submit">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+<form action="/jetson" method="POST">
+    <div class="form-group clearfix">
+        <div style="text-align: center;">
+            <input type="hidden"  id="id" name="id" value="{{user}}">
+            <input type="hidden" id="pass" name="pass" value="{{password}}">
+            <input class="btn btn-outline-primary rounded-pill h4 text-center btn-sm" type="submit" value="Take Photo">
+        </div>
+    </div>
+</form>
+{% endif %}
+{% endblock %}
+
+{% block footer %}
+<div style="position: fixed; bottom: 0; width: 95%; height: 50px;">
+    <small>copyright 2019 Mikke !o!</small> 
+</div>
+{% endblock %}
