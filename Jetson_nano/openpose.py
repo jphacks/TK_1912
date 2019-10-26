@@ -24,11 +24,59 @@ def is_included_point(dic, name_list):
             ans = False
 
     return ans
+def detect_A(center, image):
+    if is_included_point(center, ['Neck', 'RWrist', 'LWrist', 'RElbow', 'LElbow', 'RShoulder', 'LShoulder', 'Nose']):
+        angle_center = CalculationAngle(center=center[point['Neck']],
+                                    p1=center[point['RWrist']],
+                                    p2=center[point['LWrist']])
+        angle_right = CalculationAngle(center=center[point['RElbow']],
+                                    p1=center[point['RShoulder']],
+                                    p2=center[point['RWrist']])
+        angle_left = CalculationAngle(center=center[point['LElbow']],
+                                    p1=center[point['LShoulder']],
+                                    p2=center[point['LWrist']])
+        if angle_center > 90 and angle_right > 135 and angle_left > 135 and abs(center[point['RWrist']][1] - center[point['LWrist']][1]) < 30:
+            return True
+
+    return False
+
+def detect_B(center, image):
+    if is_included_point(center, ['Neck', 'RWrist', 'LWrist', 'RElbow', 'LElbow', 'RShoulder', 'LShoulder', 'Nose']):
+
+            if (center[point['RWrist']][1] <  center[point['Nose']][1]) ^ (center[point['LWrist']][1] < center[point['Nose']][1]):
+                if center[point['RWrist']][1] < center[point['LWrist']][1]:
+                    angle_elbow = CalculationAngle(center=center[point['RElbow']],
+                                        p1=center[point['RWrist']],
+                                        p2=center[point['RShoulder']])
+                else:
+                    angle_elbow = CalculationAngle(center=center[point['LElbow']],
+                                        p1=center[point['LWrist']],
+                                        p2=center[point['LShoulder']] )
+                if angle_elbow > 135:
+                    return True
+
+    return False
+
+def detect_C(center, image):
+    if is_included_point(center, ['Neck', 'RWrist', 'LWrist', 'RElbow', 'LElbow', 'RShoulder', 'LShoulder', 'Nose']):
+        angle_center = CalculationAngle(center=center[point['Neck']],
+                                    p1=center[point['RElbow']],
+                                    p2=center[point['LElbow']])
+        angle_right = CalculationAngle(center=center[point['RElbow']],
+                                    p1=center[point['RShoulder']],
+                                    p2=center[point['RWrist']])
+        angle_left = CalculationAngle(center=center[point['LElbow']],
+                                    p1=center[point['LShoulder']],
+                                    p2=center[point['LWrist']])    
+        if angle_center < 160 and angle_right < 100 and angle_left < 100 and abs(center[point['RWrist']][1] - center[point['LWrist']][1]) < 30:
+            return True
+    return False
 
 def detect_pose(center, image):
     angle_center = 0
     angle_right = 0
     angle_left = 0
+    '''
     if is_included_point(center, ['Neck', 'RWrist', 'LWrist', 'RElbow', 'LElbow', 'RShoulder', 'LShoulder', 'Nose']):
         angle_center = CalculationAngle(center=center[point['Neck']],
                                     p1=center[point['RWrist']],
@@ -54,18 +102,28 @@ def detect_pose(center, image):
                 label = 'B'
             else:
                 label = 'NG'
-        elif angle_center < 100 and angle_right < 135 and angle_left > 135 and abs(center[point['RWrist']][1] - center[point['LWrist']][1]) < 30:
+        elif angle_center < 160 and angle_right < 100 and angle_left < 100 and abs(center[point['RWrist']][1] - center[point['LWrist']][1]) < 30:
             label = 'C'
         else:
             label = 'NG'
 
     else:
         label = 'NG'
+        
+        '''
+    if detect_A(center, image):
+        label = 'A'
+    elif detect_B(center, image):
+        label = 'B'
+    elif detect_C(center, image):
+        label = 'C'
+    else :
+        label = 'NG'
     cv2.putText(image,
                 label,
                 (10, 30),  cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                 (0, 255, 0), 2)
-    print('angle_center:', angle_center, 'angle_right:', angle_right, 'angle_left:', angle_left)
+    # print('angle_center:', angle_center, 'angle_right:', angle_right, 'angle_left:', angle_left)
     return image
 
 def CalculationAngle(p1, p2, center):
