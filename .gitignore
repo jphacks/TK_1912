@@ -1,6 +1,7 @@
 .devcontainer/
 Myapp/.vscode/
 Myapp/static/image/
+Myapp/static/data/
 Myapp/lib/__pycache__/
 Myapp/templates/messages.html
 ngrok
@@ -9,3 +10,7 @@ Jetson_nano/tf_pose/__pycache__/
 Jetson_nano/data/
 output.avi
 Myapp/lib/tf-pose-estimation/
+Myapp/lib/tf_pose/tensblur/__pycache__/
+Myapp/lib/tf_pose/pafprocess/__pycache__/
+Myapp/lib/tf_pose/mobilenet/__pycache__/
+Myapp/lib/tf_pose/__pycache__/
