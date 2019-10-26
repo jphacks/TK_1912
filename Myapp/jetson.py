@@ -4,58 +4,57 @@ from lib.quest_management import questMap
 app = Flask(__name__)
 app.secret_key = b'random string...'
 
+AREA = ''
+
 # login page access
-@app.route('/', methods=['GET'])
-def login():
+@app.route('/<point>', methods=['GET'])
+def login(point):
+    global AREA
+    AREA = point
     return render_template('login.html',
-            title='Adachi Quest',
-            message='')
+            title='Adachi Quest')
 
 @app.route('/jetson', methods=['POST'])
 def index_post():
     id = request.form.get('id')
     pswd = request.form.get('pass')
-    # User & Password が一致するときのみTrue
-    myPlace = {'name':'研究室','lat':35.747701, 'lng':139.806098}
-    qm = questMap(lat=myPlace['lat'], lng=myPlace['lng'])
-    pins, question = qm.main()
     return render_template('jetson.html',
                 title='Adachi Quest',
                 message='Hello',
                 user=id,
                 password=pswd,
-                pins = pins,
-                question = question,
-                myPlace =myPlace)
+                flg=True)
 
-@app.route('/jetson', methods=['GET'])
-def index_get():
-    return redirect('/')
 
 @app.route('/login', methods=['GET'])
 def login_get():
     return redirect('/')
 
+@app.route('/takephoto', methods=['POST'])
+def takephoto_post():
+    id = request.form.get('id')
+    pswd = request.form.get('pass')
+    return render_template('takephoto.html',
+                title='Adachi Quest',
+                message='Hello',
+                user=id,
+                password=pswd)
 
 @app.route('/login', methods=['POST'])
 def login_post():
+    global AREA
     id = request.form.get('id')
     pswd = request.form.get('pass')
     manager = Management(user_id=id, password=pswd)
     # User & Password が一致するときのみTrue
     flg = manager.checkLogin()
-    myPlace = {'name':'研究室','lat':35.747701, 'lng':139.806098}
-    qm = questMap(lat=myPlace['lat'], lng=myPlace['lng'])
-    pins, question = qm.main()
     if flg:
         return render_template('jetson.html',
                 title='Adachi Quest',
-                message='Hello',
+                point=AREA,
                 user=id,
                 password=pswd,
-                pins = pins,
-                question = question,
-                myPlace =myPlace)
+                flg=False)
     else:
         return render_template('login.html',
                 title='Adachi Quest',
@@ -69,6 +68,11 @@ def signup_post():
     # 登録済みのUserの場合はFasle
     flg = manager.signup()
     return str(flg)
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    session.pop('id', None)
+    return redirect('/login')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=True, use_debugger=False)
