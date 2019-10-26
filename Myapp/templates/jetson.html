@@ -34,43 +34,55 @@
 {% endblock %}
 
 {% block content %}
+<div class="callout callout-primary">
+    Quetion : {{quest['Question']}}
+</div>
 <div class="accordion" id="accordion">
     <div class="accordion-item">
         <h3 id="accordion-heading-one" class="d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#accordion-collapse-one" aria-expanded="true" aria-controls="accordion-collapse-one">
-            答えがAの人のポーズ
+            Q1 : {{quest['Q1']}}
             <span class="accordion-icon">&#10005;</span>
         </h3>
         <div id="accordion-collapse-one" class="collapse show" aria-labelledby="accordion-heading-one" data-parent="#accordion">
             <div class="px-3 pb-3">
                 <img src="/static/image/point/北千住駅.jpg" class="card-img-top" alt="image">
-        </div>
-    </div>
-    <div class="accordion-item">
-        <h3 id="accordion-heading-two" class="collapsed rounded d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#accordion-collapse-two" aria-expanded="true" aria-controls="accordion-collapse-two">
-            答えがBの人のポーズ
-            <span class="accordion-icon">&#10005;</span>
-        </h3>
-        <div id="accordion-collapse-two" class="collapse" aria-labelledby="accordion-heading-two" data-parent="#accordion">
+            </div>
             <div class="px-3 pb-3">
-                <img src="/static/image/point/北千住駅.jpg" class="card-img-top" alt="image">
+                ポーズ説明
             </div>
         </div>
-    </div>
+        <div class="accordion-item">
+            <h3 id="accordion-heading-two" class="collapsed rounded d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#accordion-collapse-two" aria-expanded="true" aria-controls="accordion-collapse-two">
+                Q2 : {{quest['Q2']}}
+                <span class="accordion-icon">&#10005;</span>
+            </h3>
+            <div id="accordion-collapse-two" class="collapse" aria-labelledby="accordion-heading-two" data-parent="#accordion">
+                <div class="px-3 pb-3">
+                    <img src="/static/image/point/北千住駅.jpg" class="card-img-top" alt="image">
+                </div>
+                <div class="px-3 pb-3">
+                    ポーズ説明
+                </div>
+            </div>
+        </div>
     <div class="accordion-item">
         <h3 id="accordion-heading-three" class="collapsed rounded d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#accordion-collapse-three" aria-expanded="true" aria-controls="accordion-collapse-three">
-            答えがCの人のポーズ
+            Q3 : {{quest['Q3']}}
             <span class="accordion-icon">&#10005;</span>
         </h3>
         <div id="accordion-collapse-three" class="collapse" aria-labelledby="accordion-heading-three" data-parent="#accordion">
             <div class="px-3 pb-3">
                 <img src="/static/image/point/北千住駅.jpg" class="card-img-top" alt="image">
             </div>
+            <div class="px-3 pb-3">
+                ポーズ説明
+            </div>
         </div>
     </div>
 </div>
 {% if flg %}
 <div style="text-align: center;">
-    <button type="button" class="btn btn-outline-primary rounded-pill h4 text-center btn-sm" data-toggle="modal" data-target="#exampleModal" style="height: 35px; width:100px;">
+    <button type="button" class="btn btn-outline-success rounded-pill h4 text-center btn-sm" data-toggle="modal" data-target="#exampleModal">
             Open Image
     </button>
 </div>
@@ -78,7 +90,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">あなたの回答は</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">「{{quest['Answer']}}：{{quest[quest['Answer']]}}」でよいですか？</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&#10005;</span>
                     </button>
@@ -92,7 +104,7 @@
                             <div style="text-align: center;">
                                 <input type="hidden"  id="id" name="id" value="{{user}}">
                                 <input type="hidden" id="pass" name="pass" value="{{password}}">
-                                <input class="btn btn-secondary" type="submit" value="取り消し">
+                                <input class="btn btn-secondary" type="submit" value="再撮影">
                             </div>
                         </div>
                     </form>
@@ -101,7 +113,8 @@
                             <div style="text-align: center;">
                                 <input type="hidden"  id="id" name="id" value="{{user}}">
                                 <input type="hidden" id="pass" name="pass" value="{{password}}">
-                                <input class="btn btn-primary" type="submit" value="回答">
+                                <input type="hidden" id="answer" name="answer" value="{{quest['Answer']}}">
+                                <input class="btn btn-primary" type="submit" value="Submit">
                             </div>
                         </div>
                     </form>
@@ -115,7 +128,7 @@
         <div style="text-align: center;">
             <input type="hidden"  id="id" name="id" value="{{user}}">
             <input type="hidden" id="pass" name="pass" value="{{password}}">
-            <input class="btn btn-outline-primary rounded-pill h4 text-center btn-sm" type="submit" value="撮影開始" style="height: 35px; width:75px;">
+            <input class="btn btn-outline-primary rounded-pill h4 text-center btn-sm" type="submit" value="Take Photo">
         </div>
     </div>
 </form>
