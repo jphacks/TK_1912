@@ -18,7 +18,7 @@ point = {"Nose":0, "Neck":1, "RShoulder":2,"RElbow":3,"RWrist":4,
             "LSmallToe":20, "LHeel":21, "RBigToe":22, "RSmallToe":23, "RHeel":24,
             "Background":25}
 def is_included_point(dic, name_list):
-    ans = True
+    
     for name in name_list:
         if not point[name] in dic:
             ans = False
