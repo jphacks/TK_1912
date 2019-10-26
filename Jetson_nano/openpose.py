@@ -67,50 +67,12 @@ def detect_C(center, image):
                                     p2=center[point['RWrist']])
         angle_left = CalculationAngle(center=center[point['LElbow']],
                                     p1=center[point['LShoulder']],
-                                    p2=center[point['LWrist']])    
+                                    p2=center[point['LWrist']])
         if 60 < angle_center < 160 and angle_right < 100 and angle_left < 100 and abs(center[point['RWrist']][1] - center[point['LWrist']][1]) < 30:
             return True
     return False
 
 def detect_pose(center, image):
-    angle_center = 0
-    angle_right = 0
-    angle_left = 0
-    '''
-    if is_included_point(center, ['Neck', 'RWrist', 'LWrist', 'RElbow', 'LElbow', 'RShoulder', 'LShoulder', 'Nose']):
-        angle_center = CalculationAngle(center=center[point['Neck']],
-                                    p1=center[point['RWrist']],
-                                    p2=center[point['LWrist']])
-        angle_right = CalculationAngle(center=center[point['RElbow']],
-                                    p1=center[point['RShoulder']],
-                                    p2=center[point['RWrist']])
-        angle_left = CalculationAngle(center=center[point['LElbow']],
-                                    p1=center[point['LShoulder']],
-                                    p2=center[point['LWrist']])
-        if angle_center > 90 and angle_right > 135 and angle_left > 135 and abs(center[point['RWrist']][1] - center[point['LWrist']][1]) < 30:
-            label = 'A'
-        elif (center[point['RWrist']][1] <  center[point['Nose']][1]) ^ (center[point['LWrist']][1] < center[point['Nose']][1]):
-            if center[point['RWrist']][1] < center[point['LWrist']][1]:
-                angle_elbow = CalculationAngle(center=center[point['RElbow']],
-                                    p1=center[point['RWrist']],
-                                    p2=center[point['RShoulder']])
-            else:
-                angle_elbow = CalculationAngle(center=center[point['LElbow']],
-                                    p1=center[point['LWrist']],
-                                    p2=center[point['LShoulder']] )
-            if angle_elbow > 135:
-                label = 'B'
-            else:
-                label = 'NG'
-        elif angle_center < 160 and angle_right < 100 and angle_left < 100 and abs(center[point['RWrist']][1] - center[point['LWrist']][1]) < 30:
-            label = 'C'
-        else:
-            label = 'NG'
-
-    else:
-        label = 'NG'
-        
-        '''
     if detect_A(center, image):
         label = 'A'
     elif detect_B(center, image):
