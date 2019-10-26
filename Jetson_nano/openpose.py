@@ -1,51 +1,43 @@
-import argparse
 import time
-
 import cv2
 import numpy as np
+import os
 
 from tf_pose.estimator import TfPoseEstimator
-from tf_pose.networks import get_graph_path, model_wh
 
 
-fps_time = 0
+model = './mobilenet_v2_small/graph_opt.pb'
+args = {'camera': 0, 'model': model, 'resize': '320x176', 'resize_out_ratio': 4.0, 'show_process': False}
 
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='tf-pose-estimation realtime webcam')
-    parser.add_argument('--camera', type=int, default=0)
-
-    parser.add_argument('--resize', type=str, default='0x0',
-                        help='if provided, resize images before they are processed. default=0x0, Recommends : 432x368 or 656x368 or 1312x736 ')
-    parser.add_argument('--resize-out-ratio', type=float, default=4.0,
-                        help='if provided, resize heatmaps before they are post-processed. default=1.0')
-
-    parser.add_argument('--model', type=str, default='mobilenet_thin', help='cmu / mobilenet_thin / mobilenet_v2_large / mobilenet_v2_small')
-    parser.add_argument('--show-process', type=bool, default=False,
-                        help='for debug purpose, if enabled, speed for inference is dropped.')
-    args = parser.parse_args()
-
-    w, h = model_wh(args.resize)
+def main():
+    fps_time = 0
+    w, h = map(int, args['resize'].split('x'))
     if w > 0 and h > 0:
-        e = TfPoseEstimator(get_graph_path(args.model), target_size=(w, h))
+        e = TfPoseEstimator(args['model'], target_size=(w, h))
     else:
-        e = TfPoseEstimator(get_graph_path(args.model), target_size=(432, 368))
-    cam = cv2.VideoCapture(args.camera)
+        e = TfPoseEstimator(args['model'], target_size=(432, 368))
+    cam = cv2.VideoCapture(args['camera'])
     ret_val, image = cam.read()
 
     while True:
         ret_val, image = cam.read()
-        humans = e.inference(image, resize_to_default=(w > 0 and h > 0), upsample_size=args.resize_out_ratio)
+        humans = e.inference(image, resize_to_default=(w > 0 and h > 0), upsample_size=args['resize_out_ratio'])
 
-        image = TfPoseEstimator.draw_humans(image, humans, imgcopy=False)
-
+        image, center = TfPoseEstimator.draw_humans(image, humans, imgcopy=False)
+        print(center)
         cv2.putText(image,
                     "FPS: %f" % (1.0 / (time.time() - fps_time)),
                     (10, 10),  cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                     (0, 255, 0), 2)
         cv2.imshow('tf-pose-estimation result', image)
         fps_time = time.time()
+        ##### 今のポーズが出題される３つのポーズに該当しているとき、正解判定するコードを書く
+        
         if cv2.waitKey(1) == 27:
             break
 
     cv2.destroyAllWindows()
+
+
+if __name__ == '__main__':
+    main()

@@ -5,3 +5,4 @@ Myapp/lib/__pycache__/
 Myapp/templates/messages.html
 ngrok
 Jetson_nano/tf-pose-estimation/
+Jetson_nano/tf_pose/__pycache__/
