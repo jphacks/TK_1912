@@ -1,14 +1,10 @@
-
-import time
 import cv2
-import numpy as np
 import os
-import math
-from numpy import linalg as LA
-
 from tf_pose.estimator import TfPoseEstimator
+import numpy as np
+from numpy import linalg as LA
 from collections import Counter
-
+import glob
 
 model = './tf-pose-estimation/models/graph/mobilenet_v2_small/graph_opt.pb'
 args = {'camera': 0, 'model': model, 'resize': '320x176', 'resize_out_ratio': 4.0, 'show_process': False}
@@ -18,6 +14,8 @@ point = {"Nose":0, "Neck":1, "RShoulder":2,"RElbow":3,"RWrist":4,
             "REye":15, "LEye":16, "REar":17, "LEar":18, "LBigToe":19,
             "LSmallToe":20, "LHeel":21, "RBigToe":22, "RSmallToe":23, "RHeel":24,
             "Background":25}
+
+
 def is_included_point(dic, name_list):
     ans = True
     for name in name_list:
@@ -103,41 +101,40 @@ def CalculationAngle(p1, p2, center):
     angle = np.rad2deg(np.arccos(np.clip(c, -1.0, 1.0)))
     return angle
 
-
-def main():
-    labels=[]
-    fps_time = 0
-    w, h = map(int, args['resize'].split('x'))
-    if w > 0 and h > 0:
-        e = TfPoseEstimator(args['model'], target_size=(w, h))
-    else:
-        e = TfPoseEstimator(args['model'], target_size=(432, 368))
-    cam = cv2.VideoCapture('output.avi')
-    while True:
-        ret_val, image = cam.read()
-
-        humans = e.inference(image, resize_to_default=(w > 0 and h > 0), upsample_size=args['resize_out_ratio'])
-
-        image, center = TfPoseEstimator.draw_humans(image, humans, imgcopy=False)
-        labels.append(detect_pose(center=center, image=image))
-        # print(center)
-        cv2.putText(image,
-                    "FPS: %f" % (1.0 / (time.time() - fps_time)),
-                    (10, 10),  cv2.FONT_HERSHEY_SIMPLEX, 0.5,
-                    (0, 255, 0), 2)
-
-        if not ret_val or cv2.waitKey(1) & 0xFF == ord('q'):
+if __name__ == "__main__":
+    video_path = "output.avi"
+    cap = cv2.VideoCapture(video_path)
+    print(os.path.exists(video_path))
+    num = 0
+    labels = []
+    e = TfPoseEstimator(args['model'], target_size=(432, 368))
+    print('~~~~~~~~~~~~スタート~~~~~~~~~~~~~~')
+    while cap.isOpened():
+        ret, frame = cap.read()
+        print('ret;',ret)
+        if ret == True:
+            ori_image = frame
+            humans = e.inference(ori_image, resize_to_default=(432 > 0 and 368 > 0), upsample_size=args['resize_out_ratio'])
+            image, center = TfPoseEstimator.draw_humans(ori_image, humans, imgcopy=False)
+            labels.append(detect_pose(center=center, image=image))
+            cv2.imwrite("./data/pose/picture{:0=3}".format(num)+".jpg",image)
+            cv2.imwrite("./data/raw/picture{:0=3}".format(num)+".jpg", ori_image)
+            print("save picture{:0=3}".format(num)+".jpg")
+            num += 1
+        else:
             break
 
-        # cv2.namedWindow('img', cv2.WINDOW_NORMAL)
-        # cv2.imshow('frame', image)
     counter = Counter(labels)
     print(counter)
     acc_label = counter.most_common()[0][0]
+    if acc_label == 'NG':
+        acc_label = counter.most_common()[1][0]
     print(acc_label)
+    index = labels.index(acc_label)
+    filename = sorted(glob.glob('./data/raw/*.jpg'))
+    img = cv2.imread(filename[index])
+    cv2.imshow('result', img)
+    cv2.waitKey(0)
 
-
-
-
-if __name__ == '__main__':
-    main()
+    cap.release()
+    cv2.destroyAllWindows()
