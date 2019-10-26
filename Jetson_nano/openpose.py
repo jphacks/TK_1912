@@ -68,7 +68,7 @@ def detect_C(center, image):
         angle_left = CalculationAngle(center=center[point['LElbow']],
                                     p1=center[point['LShoulder']],
                                     p2=center[point['LWrist']])    
-        if angle_center < 160 and angle_right < 100 and angle_left < 100 and abs(center[point['RWrist']][1] - center[point['LWrist']][1]) < 30:
+        if 60 < angle_center < 160 and angle_right < 100 and angle_left < 100 and abs(center[point['RWrist']][1] - center[point['LWrist']][1]) < 30:
             return True
     return False
 
