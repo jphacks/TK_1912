@@ -1,8 +1,5 @@
 # ADACHI QUEST
 
-[![ADACHI QUEST image](https://i.imgur.com/WmiKu9X.png)]
-(https://www.youtube.com/watch?v=G5rULR53uMk)
-
 [![ADACHI QUEST image](./readme_image/title.png)]
 (https://www.youtube.com/watch?v=G5rULR53uMk)
 
@@ -22,7 +19,6 @@
 - OpenPoseを利用してクイズの回答・スタンプのポーズ取得を行う(回答)
 
 #### アプリの使用方法
-![Usage Image1](https://i.imgur.com/pJESVis.png)
 ![Usage Image1](./readme_image/figure.png)
 
 
