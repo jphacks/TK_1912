@@ -40,42 +40,42 @@
 <div class="accordion" id="accordion">
     <div class="accordion-item">
         <h3 id="accordion-heading-one" class="d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#accordion-collapse-one" aria-expanded="true" aria-controls="accordion-collapse-one">
-            Q1 : {{quest['Q1']}}
+            A : {{quest['A']}}
             <span class="accordion-icon">&#10005;</span>
         </h3>
         <div id="accordion-collapse-one" class="collapse show" aria-labelledby="accordion-heading-one" data-parent="#accordion">
             <div class="px-3 pb-3">
-                <img src="/static/image/point/北千住駅.jpg" class="card-img-top" alt="image">
+                <img src="/static/image/A.jpg" class="card-img-top" alt="image">
             </div>
             <div class="px-3 pb-3">
-                ポーズ説明
+                両手を広げて！
             </div>
         </div>
         <div class="accordion-item">
             <h3 id="accordion-heading-two" class="collapsed rounded d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#accordion-collapse-two" aria-expanded="true" aria-controls="accordion-collapse-two">
-                Q2 : {{quest['Q2']}}
+                B : {{quest['B']}}
                 <span class="accordion-icon">&#10005;</span>
             </h3>
             <div id="accordion-collapse-two" class="collapse" aria-labelledby="accordion-heading-two" data-parent="#accordion">
                 <div class="px-3 pb-3">
-                    <img src="/static/image/point/北千住駅.jpg" class="card-img-top" alt="image">
+                    <img src="/static/image/B.jpg" class="card-img-top" alt="image">
                 </div>
                 <div class="px-3 pb-3">
-                    ポーズ説明
+                    片手をあげて！
                 </div>
             </div>
         </div>
     <div class="accordion-item">
         <h3 id="accordion-heading-three" class="collapsed rounded d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#accordion-collapse-three" aria-expanded="true" aria-controls="accordion-collapse-three">
-            Q3 : {{quest['Q3']}}
+            C : {{quest['C']}}
             <span class="accordion-icon">&#10005;</span>
         </h3>
         <div id="accordion-collapse-three" class="collapse" aria-labelledby="accordion-heading-three" data-parent="#accordion">
             <div class="px-3 pb-3">
-                <img src="/static/image/point/北千住駅.jpg" class="card-img-top" alt="image">
+                <img src="/static/image/C.jpg" class="card-img-top" alt="image">
             </div>
             <div class="px-3 pb-3">
-                ポーズ説明
+                脇を閉めて、肘を下に、手は上に！
             </div>
         </div>
     </div>
@@ -90,13 +90,13 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">「{{quest['Answer']}}：{{quest[quest['Answer']]}}」でよいですか？</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">「{{answer}}：{{quest[answer]}}」でよいですか？</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&#10005;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <img src="/static/Image/image.jpg">
+                    <img src="http://192.168.100.46:5000/static/data/{{user}}/{{quest['name']}}/{{answer}}/{{file}}">
                 </div>
                 <div class="modal-footer">
                     <form action="/login" method="POST">
@@ -113,7 +113,7 @@
                             <div style="text-align: center;">
                                 <input type="hidden"  id="id" name="id" value="{{user}}">
                                 <input type="hidden" id="pass" name="pass" value="{{password}}">
-                                <input type="hidden" id="answer" name="answer" value="{{quest['Answer']}}">
+                                <input type="hidden" id="answer" name="answer" value="{{answer}}">
                                 <input class="btn btn-primary" type="submit" value="Submit">
                             </div>
                         </div>
@@ -123,7 +123,7 @@
         </div>
     </div>
 {% else %}
-<form action="http://192.168.100.36:5000/post" method="POST">
+<form action="http://192.168.100.46:5000/post/{{user}}/{{quest['name']}}" method="POST">
     <div class="form-group clearfix">
         <div style="text-align: center;">
             <input type="hidden"  id="id" name="id" value="{{user}}">
