@@ -43,7 +43,7 @@ def index_post(path, answer):
     # Areaのクエストを表示
     am = AnswerManage(area=AREA)
     data = am.acquisitionQuest()
-    url = 'http://192.168.100.46:5000/static/data/' + username + '/' + data['name'] + '/' + answer + '/' + path
+    url = 'http://x.x.x.x:5000/static/data/' + username + '/' + data['name'] + '/' + answer + '/' + path
     dst = './static/data/' + username + '/' + data['name']
     download_img(url, dst, 'result.jpg')
     return render_template('jetson.html',
