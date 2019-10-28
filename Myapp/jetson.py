@@ -2,16 +2,33 @@ from flask import Flask, render_template, request, session, redirect, jsonify
 from lib.user_management import Management
 from lib.quest_management import questMap
 from lib.answer_management import AnswerManage
+import urllib.error
+import urllib.request
+import os
+import requests
+
 app = Flask(__name__)
 app.secret_key = b'random string...'
 
 AREA = ''
+username = ''
+
+
+def download_img(url, dst, path):
+    os.makedirs(dst, exist_ok=True)
+    dst_path = os.path.join(dst, path)
+    r = requests.get(url, stream=True)
+    if r.status_code == 200:
+        with open(dst_path, 'wb') as f:
+            f.write(r.content)
+
 
 # login page access
 @app.route('/<point>', methods=['GET'])
 def login(point):
     global AREA
-    AREA = point
+    if point != 'favicon.ico':
+        AREA = point
     return render_template('login.html',
             title='Adachi Quest')
 
@@ -20,21 +37,24 @@ def login_redirect():
     return render_template('login.html',
             title='Adachi Quest')
 
-@app.route('/jetson', methods=['POST'])
-def index_post():
-    global AREA
-    id = request.form.get('id')
-    pswd = request.form.get('pass')
+@app.route('/jetson/<path>/<answer>', methods=['GET'])
+def index_post(path, answer):
+    global AREA, username
     # Areaのクエストを表示
     am = AnswerManage(area=AREA)
     data = am.acquisitionQuest()
+    url = 'http://192.168.100.46:5000/static/data/' + username + '/' + data['name'] + '/' + answer + '/' + path
+    dst = './static/data/' + username + '/' + data['name']
+    download_img(url, dst, 'result.jpg')
     return render_template('jetson.html',
                 title='Adachi Quest',
                 message='Hello',
-                user=id,
-                password=pswd,
+                user=username,
+                password='',
                 flg=True,
-                quest=data)
+                quest=data,
+                file=path,
+                answer=answer)
 
 
 @app.route('/login', methods=['GET'])
@@ -59,8 +79,9 @@ def takephoto_post():
 
 @app.route('/login', methods=['POST'])
 def login_post():
-    global AREA
+    global AREA, username
     id = request.form.get('id')
+    username = id
     pswd = request.form.get('pass')
     manager = Management(user_id=id, password=pswd)
     # User & Password が一致するときのみTrue
@@ -95,4 +116,4 @@ def logout():
     return redirect('/')
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=True, use_debugger=False)
+    app.run(host='0.0.0.0', port=8000, debug=True, use_reloader=True, use_debugger=False)

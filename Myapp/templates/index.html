@@ -89,9 +89,9 @@
                             </div>
                             <div class="modal-body">
                                 <ul style="list-style-type:decimal">
-                                    <li>{{question['Q1'][loop.index0]}}</li>
-                                    <li>{{question['Q2'][loop.index0]}}</li>
-                                    <li>{{question['Q3'][loop.index0]}}</li>
+                                    <li>{{question['A'][loop.index0]}}</li>
+                                    <li>{{question['B'][loop.index0]}}</li>
+                                    <li>{{question['C'][loop.index0]}}</li>
                                 </ul>
                             </div>
                             <div class="accordion" id="accordion">
@@ -150,7 +150,7 @@
             <div class="card-body">
                 {% for stamp in question['name']%}
                 <button type="button" data-toggle="modal" data-target="#{{stamp}}Lightbox" class="bg-white rounded-lg">
-                        <img src="/static/image/point/{{stamp}}.jpg" class="img-avatar rounded-circle border" style="object-fit:cover;">
+                        <img src="./static/data/{{user}}/{{stamp}}/result.jpg" class="img-avatar rounded-circle border" style="object-fit:cover;">
                 </button>
                 <div class="modal modal-lightbox fade" id="{{stamp}}Lightbox" tabindex="-1" role="dialog" aria-labelledby="{{stamp}}Lightbox" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -161,11 +161,11 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <img src="/static/image/point/{{stamp}}.jpg" class="card-img rounded-0" style="height: 100%; width:100%; object-fit:cover" alt="image">
+                                <img src="./static/data/{{user}}/{{stamp}}/result.jpg" class="card-img rounded-0" style="height: 100%; width:100%; object-fit:cover" alt="image">
                             </div>
                             <div class="modal-footer">
                                 <div class="float-right">
-                                    <a href="/static/image/point/{{stamp}}.jpg" download="{{stamp}}.jpg" class="btn btn-outline-primary">
+                                    <a href="./static/data/{{user}}/{{stamp}}/result.jpg" download="{{stamp}}.jpg" class="btn btn-outline-primary">
                                     <i class="fas fa-angle-double-down"></i>
                                     <span class="btn-text">Download</span></a>
                                 </div>
@@ -291,9 +291,9 @@ new Vue({
                 var pinsName = '<p class="text-primary" style="font-size:18px;">'+pins['name'][i]+'</p>';
                 if (pins['icon'][i] === '00'){
                     var question = '<div class="bg-info text-white" style="font-size:15px;">Q : '+Question['Question'][i]+'</div>';
-                    var Q1 = '<li style="font-size:15px;">'+Question['Q1'][i]+'</li>';
-                    var Q2 = '<li style="font-size:15px;">'+Question['Q2'][i]+'</li>';
-                    var Q3 = '<li style="font-size:15px;">'+Question['Q3'][i]+'</li>';
+                    var Q1 = '<li style="font-size:15px;">'+Question['A'][i]+'</li>';
+                    var Q2 = '<li style="font-size:15px;">'+Question['B'][i]+'</li>';
+                    var Q3 = '<li style="font-size:15px;">'+Question['C'][i]+'</li>';
                     var text = pinsName+question+'<ul type="circle" style="border: 2px; skyblue dashed; background: #f3fbff;">'+Q1+Q2+Q3+'</ul>'
                 } else{
                     var text = pinsName

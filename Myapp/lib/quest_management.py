@@ -17,14 +17,14 @@ class questMap:
         return pins, question
 
     def settingQuestion(self, pins):
-        question = {'name':[],'Question':[], 'Q1':[], 'Q2':[], 'Q3':[], 'Answer':[],'copyRight':[], 'explanation':[]}
+        question = {'name':[],'Question':[], 'A':[], 'B':[], 'C':[], 'Answer':[],'copyRight':[], 'explanation':[]}
         df = pd.read_csv(self.question_file)
         for name in pins['name']:
             question['name'].append(name)
             question['Question'].append(list(df[df['name'] == name]['Question'])[0])
-            question['Q1'].append(list(df[df['name'] == name]['Q1'])[0])
-            question['Q2'].append(list(df[df['name'] == name]['Q2'])[0])
-            question['Q3'].append(list(df[df['name'] == name]['Q3'])[0])
+            question['A'].append(list(df[df['name'] == name]['A'])[0])
+            question['B'].append(list(df[df['name'] == name]['B'])[0])
+            question['C'].append(list(df[df['name'] == name]['C'])[0])
             question['Answer'].append(list(df[df['name'] == name]['Answer'])[0])
             question['copyRight'].append(list(df[df['name'] == name]['copyRight'])[0])
             question['explanation'].append(list(df[df['name'] == name]['explanation'])[0])
@@ -40,20 +40,19 @@ class questMap:
             lng = list(maps.ix[[index],['lng']]['lng'])[0]
             name = list(maps.ix[[index],['name']]['name'])[0]
             distance = self.distancePoint(lat=lat, lng=lng)
-            if distance < 0.2:
+            print(name,':', distance)
+            if distance < 1:
                 flg = '00'
                 pins['name'].append(name)
                 pins['lat'].append(lat)
                 pins['lng'].append(lng)
                 pins['icon'].append(str(flg))
-            elif (distance < 0.5) and (distance >= 0.1):
+            else:
                 flg = '01'
                 pins['name'].append(name)
                 pins['lat'].append(lat)
                 pins['lng'].append(lng)
                 pins['icon'].append(str(flg))
-            else:
-                flg = 2
         return pins
 
     def distancePoint(self, lat, lng):
