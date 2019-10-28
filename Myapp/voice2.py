@@ -4,8 +4,8 @@ import pychromecast
 from lib.VoiceToText import VoiceText
 import time
 
-ip_address = "192.168.100.41"  # ChromecastデバイスのIPアドレス
-server_host = "192.168.100.36"  # このスクリプトを動かすサーバのホスト名
+ip_address = "x.x.x.x"  # ChromecastデバイスのIPアドレス
+server_host = "x.x.x.x"  # このスクリプトを動かすサーバのホスト名
 server_port = 8000  # このスクリプトを動かすサーバのポート番号
 app = Flask(__name__)
 device = pychromecast.Chromecast(ip_address)

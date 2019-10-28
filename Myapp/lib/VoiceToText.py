@@ -1,6 +1,7 @@
 import os
 import pychromecast
 
+# テキストを音声に変換
 class VoiceText:
 
     def __init__(self):
@@ -8,7 +9,7 @@ class VoiceText:
 
     def main(self, text, server_host):
         os.makedirs(self.root, exist_ok=True)
-        path = os.path.join(self.root, text+'.mp3')
+        path = os.path.join(self.root, text + '.mp3')
         cmd = "curl 'https://api.voicetext.jp/v1/tts' \
                 -o '{file}' \
                 -u '11a7lw7bvjukcsxn:' \

@@ -3,6 +3,7 @@ import numpy as np
 import os
 from math import sin, cos, sqrt, atan2, radians
 
+# 
 class questMap:
 
     def __init__(self, lat, lng):
@@ -12,7 +13,9 @@ class questMap:
         self.lng = lng
 
     def main(self):
+        # クエスト情報をjson形式に変更
         pins = self.settingMap()
+        # クエスト実施場所の位置情報と現在地との距離を求める
         question = self.settingQuestion(pins=pins)
         return pins, question
 
@@ -38,9 +41,11 @@ class questMap:
         for index in range(len(maps)):
             lat = list(maps.ix[[index],['lat']]['lat'])[0]
             lng = list(maps.ix[[index],['lng']]['lng'])[0]
-            name = list(maps.ix[[index],['name']]['name'])[0]
+            name = list(maps.ix[[index], ['name']]['name'])[0]
+            # 現在地との距離を求める。
             distance = self.distancePoint(lat=lat, lng=lng)
-            print(name,':', distance)
+            print(name, ':', distance)
+            # 距離が1km以内か否かでflgを変える。
             if distance < 1:
                 flg = '00'
                 pins['name'].append(name)
