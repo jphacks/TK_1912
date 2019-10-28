@@ -40,15 +40,17 @@ def form():
     mc.block_until_active()
     tf.takeMovie()
 
-    text = 'ポーズ認識を始めます'
+    text = '少々お待ちください。'
     url = vt.main(text = text, server_host=server_host)
     device.wait()
     mc = device.media_controller
     mc.play_media(url, "audio/mp3")
     mc.block_until_active()
     answer, image_path = tf.MovieToImage()
-
-    text = 'これで終わりです。オープンイメージを押してください'
+    if answer != 'NG':
+        text = 'あなたは' + answer + 'を選びましたね。オープンイメージを押してください。'
+    else:
+        text = '何のポーズかわかりませんでした。再撮影を押してください'
     url = vt.main(text = text, server_host=server_host)
     device.wait()
     mc = device.media_controller
