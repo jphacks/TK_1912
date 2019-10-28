@@ -1,7 +1,8 @@
 # ADACHI QUEST
 
 ![ADACHI QUEST image](./readme_image/title.png)
-[![Product Name](https://www.youtube.com/watch?v=G5rULR53uMk/0.jpg)](https://youtu.be/99WdGiMOOuA)
+[![ADACHI QUEST](https://www.youtube.com/watch?v=G5rULR53uMk/0.jpg)](https://youtu.be/99WdGiMOOuA)
+[![IMAGE ALT TEXT HERE](./readme_image/title.png)](https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE)
 
 
 
