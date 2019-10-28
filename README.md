@@ -1,7 +1,8 @@
 # ADACHI QUEST
 
-[![ADACHI QUEST image](./readme_image/title.png)]
-(https://www.youtube.com/watch?v=G5rULR53uMk)
+![ADACHI QUEST image](./readme_image/title.png)
+動画は10/28(月)17:00アップロード予定
+[![image movie](https://www.youtube.com/watch?v=G5rULR53uMk/0.jpg)](https://www.youtube.com/watch?v=G5rULR53uMk)
 
 
 
