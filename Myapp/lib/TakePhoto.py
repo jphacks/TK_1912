@@ -12,7 +12,7 @@ from tf_pose.estimator import TfPoseEstimator
 
 class tfOpenpose:
 
-    def __init__(self, user, area):
+    def __init__(self):
         self.point = {"Nose":0, "Neck":1, "RShoulder":2,"RElbow":3,"RWrist":4,
                 "LShoulder":5, "LElbow":6, "LWrist":7, "MidHip":8, "RHip":9,
                 "RKnee":10, "RAnkle":11,"LHip":12, "LKnee":13, "LAnkle":14,
@@ -21,14 +21,14 @@ class tfOpenpose:
                 "Background":25}
         self.width = 320
         self.height = 176
-        self.user = user
-        self.area = area
 
     def setting(self):
         model = './lib/tf-pose-estimation/models/graph/mobilenet_v2_small/graph_opt.pb'
         self.e = TfPoseEstimator(model, target_size=(self.width, self.height))
 
-    def captureSetting(self, filename):
+    def captureSetting(self, filename, user, area):
+        self.user = user
+        self.area = area
         self.root = './static/data/'+self.user+'/'+self.area
         os.makedirs(self.root, exist_ok=True)
         self.cam = cv2.VideoCapture(0)
@@ -50,13 +50,12 @@ class tfOpenpose:
         print('~~~~~~~~~~~~スタート~~~~~~~~~~~~~~')
         while cap.isOpened():
             ret, ori_image = cap.read()
-            normal = np.copy(ori_image)
             if ret == True:
                 humans = self.e.inference(ori_image, resize_to_default=(self.width > 0 and self.height > 0), upsample_size=4.0)
                 image, center = TfPoseEstimator.draw_humans(ori_image, humans, imgcopy=False)
                 image, label = self.detect_pose(center=center, image=image)
                 labels.append(label)
-                cv2.imwrite(save_root+'/'+label+"/picture{:0=3}".format(num)+".jpg", normal)
+                cv2.imwrite(save_root+'/'+label+"/picture{:0=3}".format(num)+".jpg", ori_image)
                 num += 1
             else:
                 break
@@ -76,17 +75,17 @@ class tfOpenpose:
             ret_val, image = self.cam.read()
             reImage = cv2.resize(image, (self.width, self.height))
             end = time.time()
-            if (end - start) > 10:
+            if (end - start) > 7:
                 self.writer.write(reImage)
                 humans = self.e.inference(image, resize_to_default=(self.width > 0 and self.height > 0), upsample_size=4.0)
                 image, center = TfPoseEstimator.draw_humans(image, humans, imgcopy=False)
                 image, label = self.detect_pose(center=center, image=image)
                 cv2.putText(image,
                             "FPS: %f" % (1.0 / (time.time() - fps_time)),
-                            (10, 10),  cv2.FONT_HERSHEY_SIMPLEX, 2,
-                            (0, 255, 0), 2)
+                            (10, 10),  cv2.FONT_HERSHEY_SIMPLEX, 1,
+                            (0, 255, 0), 1)
             else:
-                image = self.TextComposition(text=int((10 - (end - start) )), bg=image)
+                image = self.TextComposition(text=int((7 - (end - start) )), bg=image)
             cv2.imshow('tf-pose-estimation result', image)
             fps_time = time.time()
             ##### 今のポーズが出題される３つのポーズに該当しているとき、正解判定するコードを書く
