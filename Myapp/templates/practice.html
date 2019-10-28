@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{title}}
+{% endblock %}
+
+{% block headline %}
+{{title}}
+{% endblock %}
+
+{% block content %}
+<form action="http://192.168.100.36:5000/post" method="POST">
+    <div class="form-group">
+        <div class="col-sm-10">
+            <button  class="btn btn-primary">Start</button>
+        </div>
+    </div>
+</form>
+<div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+</div>
+{% endblock %}
+
+{% block footer %}
+copyright © 2019 Mikke !o!
+{% endblock %}
